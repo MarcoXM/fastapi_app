@@ -29,6 +29,5 @@ class Airtable:
         }
 
         r = requests.post(end_point, json = json_data, headers= header)
-        print(end_point, r.json())
 
         return r.status_code == 200 or r.status_code == 201
