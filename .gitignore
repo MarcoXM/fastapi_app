@@ -7,8 +7,8 @@ __pycache__/
 *$py.class
 
 src/.env
-src/notice
 .vscode/
+*/__pycache__/
 
 
 # C extensions
