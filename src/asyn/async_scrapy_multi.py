@@ -1,27 +1,33 @@
 import asyncio
 from aiohttp import ClientSession
 import pathlib
+import time 
+from datetime import datetime 
 
 async def fetch(url, session, year):
     async with session.get(url) as response:
+        await asyncio.sleep(15)
         html_body = await response.read()
         return {"body": html_body, "year": year}
 
-async def main(start_year=2020, years_ago=5):
+
+loads = [8588922064, 8588924118, 8588923815,8588922578]
+
+async def main(loads = loads):
     html_body = ""
     tasks = []
     # semaphore
     async with ClientSession() as session:
-        for i in range(0, years_ago):
-            year = start_year - i
-            url = f'https://www.boxofficemojo.com/year/{year}/'
-            print("year", year, url)
+        for load in loads:
+
+            url = f'https://my.yrc.com/tools/track/shipments?referenceNumber={load}&referenceNumberType=PRO&time={int(time.mktime(datetime.now().timetuple()))}'
+            print("load#", load, url)
             tasks.append(
                 asyncio.create_task(
-                    fetch(url, session, year)
+                    fetch(url, session, load)
                 )
             )
-        pages_content = await asyncio.gather(*tasks) # [{"body": "..", "year": 2020 }]
+        pages_content = await asyncio.gather(*tasks) # [{"body": "..", "load": Pro# }]
         return pages_content
 
 

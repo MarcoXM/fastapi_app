@@ -52,10 +52,10 @@ async def get_similar_features(ticker,df):
     return tmp.groupby(by = [tmp.index.month, tmp.index.year]).mean()
 
 
-async def get_Data(ticker):
+async def get_Data(ticker,df):
 
     a = await get_line_item(ticker)
-    b = await get_similar_features(ticker)
+    b = await get_similar_features(ticker,df)
 
     ticker_result = []
     for line_item in a.columns:
@@ -76,7 +76,7 @@ async def main(): # coroutine
     for i, ticker in enumerate(tickers):
         tasks.append(
             asyncio.create_task(
-                get_Data(ticker)
+                get_Data(ticker,df)
             )
         )
 
